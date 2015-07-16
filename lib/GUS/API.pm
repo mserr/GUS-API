@@ -15,7 +15,7 @@ use Exporter qw(import);
 our @EXPORT_OK = qw(login);
 
 
-use version; $VERSION = qv('0.0.3');
+use version; my $VERSION = qv('0.0.3');
 
 # Module implementation here
 
@@ -32,10 +32,10 @@ my $USERKEY = "gopo49n9gbj303og6ny7";
 #POBIERZ NR SESJI
 sub login{
   my $userKey = shift;
-  my $ua = LWP::UserAgent->new;
+  my $ua = LWP::UserAgent->new();
   my $req = HTTP::Request->new(POST => $url);
   $req->content_type('application/json');
-  $req->content("{\"pKluczUzytkownika\":$userKey}");
+  $req->content("{\"pKluczUzytkownika\":\"$userKey\"}");
   my $res = $ua->request($req);
   my $jsres = from_json( $res->{_content} );
   return $jsres->{d}
