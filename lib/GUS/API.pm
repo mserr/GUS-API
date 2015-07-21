@@ -12,7 +12,7 @@ use MIME::Base64;
 use XML::Simple;
 use Exporter qw(import);
 
-our @EXPORT_OK = qw(login get_captcha);
+our @EXPORT_OK = qw(login get_captcha captcha2jpeg);
 
 use version; our $VERSION = qv('0.0.1');
 
@@ -51,6 +51,17 @@ sub get_captcha{
   return $jscaptcha->{d};
 }
 
+sub captcha2jpeg{
+
+  my $encoded_captcha = shift;
+  my $file_name       = shift || '/tmp/captcha.jpg';
+  
+  my $decoded = MIME::Base64::decode_base64($encoded_captcha);
+  open my $fh, '>',"$file_name";
+  binmode $fh;
+  print $fh $decoded;
+  close $fh;
+}
 
 1; 
 __END__
