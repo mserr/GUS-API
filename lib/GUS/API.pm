@@ -31,7 +31,6 @@ my $USERKEY = "gopo49n9gbj303og6ny7";
 #POBIERZ NR SESJI
 sub login{
   my $userKey = shift;
-  my $ua = LWP::UserAgent->new();
   my $req = HTTP::Request->new(POST => $url);
   $req->content_type('application/json');
   $req->content("{\"pKluczUzytkownika\":\"$userKey\"}");
@@ -39,6 +38,8 @@ sub login{
   my $jsres = from_json( $res->{_content} );
   return $jsres->{d}
 }
+
+
 
 
 1; 
