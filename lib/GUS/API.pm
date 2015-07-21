@@ -12,23 +12,24 @@ use MIME::Base64;
 use XML::Simple;
 use Exporter qw(import);
 
-our @EXPORT_OK = qw(login);
+our @EXPORT_OK = qw(login get_captcha);
 
 use version; our $VERSION = qv('0.0.1');
 
 # Module implementation here
 
 my $url = "https://wyszukiwarkaregontest.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc/ajaxEndpoint/Zaloguj";
-my $urlc = "https://wyszukiwarkaregontest.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc/ajaxEndpoint/PobierzCaptcha";
-my $urlcheck = "https://wyszukiwarkaregontest.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc/ajaxEndpoint/SprawdzCaptcha";
-my $urlsearch = "https://wyszukiwarkaregontest.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc/ajaxEndpoint/DaneSzukaj";
-#my $url = "https://wyszukiwarkaregontest.stat.gov.pl/wsBIR/wsdl/UslugaBIRzewnPubl.xsd";
+my $url_get_captcha   = "https://wyszukiwarkaregontest.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc/ajaxEndpoint/PobierzCaptcha";
+my $url_check_captcha = "https://wyszukiwarkaregontest.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc/ajaxEndpoint/SprawdzCaptcha";
+my $url_search = "https://wyszukiwarkaregontest.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc/ajaxEndpoint/DaneSzukaj";
+
+
 my $json = {"pKluczUzytkownika" => 'gopo49n9gbj303og6ny7'};
 my $ua = LWP::UserAgent->new; # You might want some options here
 my $USERKEY = "gopo49n9gbj303og6ny7";
 
 
-#POBIERZ NR SESJI
+
 sub login{
   my $userKey = shift;
   my $req = HTTP::Request->new(POST => $url);
@@ -36,10 +37,19 @@ sub login{
   $req->content("{\"pKluczUzytkownika\":\"$userKey\"}");
   my $res = $ua->request($req);
   my $jsres = from_json( $res->{_content} );
-  return $jsres->{d}
+  return $jsres->{d};
 }
 
-
+sub get_captcha{
+  my $sid = shift;
+  my $req = HTTP::Request->new(POST => $url_get_captcha);
+  $req->header('sid' => $sid);
+  $req->content_type('application/json');
+  $req->content('{}');
+  my $res = $ua->request( $req );
+  my $jscaptcha = from_json( $res->{_content} );
+  return $jscaptcha->{d};
+}
 
 
 1; 
