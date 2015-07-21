@@ -14,8 +14,7 @@ use Exporter qw(import);
 
 our @EXPORT_OK = qw(login);
 
-
-use version; my $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.1');
 
 # Module implementation here
 
