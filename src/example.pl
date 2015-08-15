@@ -2,7 +2,7 @@
 
 use lib '../lib';
 use Modern::Perl;
-use GUS::API qw(login get_captcha captcha2jpeg);
+use GUS::API qw(login get_captcha captcha2jpeg check_captcha);
 
 
 my $session_id = login('gopo49n9gbj303og6ny7');
@@ -14,3 +14,8 @@ say $captcha;
 
 say 'You will find decoded picture at /tmp/decoded_captcha.jpg';
 captcha2jpeg($captcha, '/tmp/decoded_captcha.jpg');
+
+if ( check_captcha( $session_id, 'aaaaa' ) ){
+  say 'Captcha was succesfully verified!';
+};
+
