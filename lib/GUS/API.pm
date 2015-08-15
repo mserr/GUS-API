@@ -12,7 +12,7 @@ use MIME::Base64;
 use XML::Simple;
 use Exporter qw(import);
 
-our @EXPORT_OK = qw(login get_captcha captcha2jpeg check_captcha);
+our @EXPORT_OK = qw(login get_captcha captcha2jpeg check_captcha search_nip);
 
 use version; our $VERSION = qv('0.0.1');
 
@@ -75,6 +75,21 @@ sub check_captcha{
   my $res = $ua->request($req);
   my $jscaptcha = from_json( $res->{_content} );
   return $jscaptcha->{d};
+}
+
+sub search_nip{
+
+  my $sid          = shift;
+  my $nip          = shift;
+  
+  my $req = HTTP::Request->new(POST => $url_search);
+  $req->header('sid' => $sid);
+  $req->content_type('application/json');
+  $req->content('{"pParametryWyszukiwania":{"Nip":"'.$nip.'"}}');
+  my $res = $ua->request($req);
+  my $jsondata = from_json($res->{_content});
+  $res = XMLin($jsondata->{d});
+  return $res;
 }
 
 1; 
