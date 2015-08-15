@@ -12,7 +12,7 @@ use MIME::Base64;
 use XML::Simple;
 use Exporter qw(import);
 
-our @EXPORT_OK = qw(login get_captcha captcha2jpeg);
+our @EXPORT_OK = qw(login get_captcha captcha2jpeg check_captcha);
 
 use version; our $VERSION = qv('0.0.1');
 
@@ -61,6 +61,20 @@ sub captcha2jpeg{
   binmode $fh;
   print $fh $decoded;
   close $fh;
+}
+
+sub check_captcha{
+  
+  my $sid          = shift;
+  my $captcha_text = shift;
+  
+  my $req = HTTP::Request->new(POST => $url_check_captcha);
+  $req->header('sid' => $sid);
+  $req->content_type('application/json');
+  $req->content('{"pCaptcha":"'.$captcha_text.'"}');
+  my $res = $ua->request($req);
+  my $jscaptcha = from_json( $res->{_content} );
+  return $jscaptcha->{d};
 }
 
 1; 
