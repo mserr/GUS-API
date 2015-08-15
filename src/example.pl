@@ -12,5 +12,5 @@ my $captcha = get_captcha($session_id);
 say 'Read your numbers:';
 say $captcha;
 
-say 'You will decoded picture at /tmp/decoded_captcha.jpg';
+say 'You will find decoded picture at /tmp/decoded_captcha.jpg';
 captcha2jpeg($captcha, '/tmp/decoded_captcha.jpg');
