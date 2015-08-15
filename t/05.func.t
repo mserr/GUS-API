@@ -1,9 +1,13 @@
-use Test::More tests => 1;
+use Test::More ;
 use lib '../lib';
-use  GUS::API qw/login/;
+use  GUS::API qw/login get_captcha/;
 
 my $user_key = 'gopo49n9gbj303og6ny7';
 
 my $session_id = login($user_key);
-print "$session_id\n";
-cmp_ok( length( $session_id ),'==',20,'Login ok.' ); 
+ok( length( $session_id ) == 20,'Login ok.' ); 
+
+my $captcha = get_captcha($session_id);
+ok( length($captcha)  > 20,'got encoded captcha.' ); 
+
+done_testing();
