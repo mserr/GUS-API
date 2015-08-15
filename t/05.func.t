@@ -1,6 +1,6 @@
 use Test::More ;
 use lib '../lib';
-use  GUS::API qw/login get_captcha captcha2jpeg check_captcha/;
+use  GUS::API qw/login get_captcha captcha2jpeg check_captcha search_nip/;
 
 my $user_key = 'gopo49n9gbj303og6ny7';
 
@@ -15,5 +15,8 @@ ok( -e '/tmp/gus_captcha.jpg' , 'captcha2jpeg' );
 
 ok( check_captcha($session_id, 'aaaab') == 0, 'check_captcha - false');
 ok( check_captcha($session_id, 'aaaaa') == 1, 'check_captcha - true');
+
+my $data = search_nip($session_id, '9570949817');
+ok( defined($data->{dane}), 'search ok' );
 
 done_testing();
