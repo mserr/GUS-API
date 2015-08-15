@@ -54,7 +54,7 @@ sub get_captcha{
 sub captcha2jpeg{
 
   my $encoded_captcha = shift;
-  my $file_name       = shift || '/tmp/captcha.jpg';
+  my $file_name       = shift || '/tmp/gus_captcha.jpg';
   
   my $decoded = MIME::Base64::decode_base64($encoded_captcha);
   open my $fh, '>',"$file_name";
