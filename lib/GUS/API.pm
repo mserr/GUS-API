@@ -34,7 +34,7 @@ sub login{
   my $userKey = shift;
   my $req = HTTP::Request->new(POST => $url);
   $req->content_type('application/json');
-  $req->content("{\"pKluczUzytkownika\":\"$userKey\"}");
+  $req->content( to_json( {"pKluczUzytkownika" => $userKey} ) );
   my $res = $ua->request($req);
   my $jsres = from_json( $res->{_content} );
   return $jsres->{d};
@@ -71,7 +71,7 @@ sub check_captcha{
   my $req = HTTP::Request->new(POST => $url_check_captcha);
   $req->header('sid' => $sid);
   $req->content_type('application/json');
-  $req->content('{"pCaptcha":"'.$captcha_text.'"}');
+  $req->content( to_json({"pCaptcha" => $captcha_text}) );
   my $res = $ua->request($req);
   my $jscaptcha = from_json( $res->{_content} );
   return $jscaptcha->{d};
@@ -85,7 +85,7 @@ sub search_nip{
   my $req = HTTP::Request->new(POST => $url_search);
   $req->header('sid' => $sid);
   $req->content_type('application/json');
-  $req->content('{"pParametryWyszukiwania":{"Nip":"'.$nip.'"}}');
+  $req->content( to_json({"pParametryWyszukiwania" => {"Nip" => $nip}}) );
   my $res = $ua->request($req);
   my $jsondata = from_json($res->{_content});
   $res = XMLin($jsondata->{d});
