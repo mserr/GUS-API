@@ -35,8 +35,7 @@ sub login{
   my $req = HTTP::Request->new(POST => $url);
   $req->content_type('application/json');
   $req->content( to_json( {"pKluczUzytkownika" => $userKey} ) );
-  my $res = $ua->request($req);
-  my $jsres = from_json( $res->{_content} );
+  my $jsres = from_json( $ua->request($req)->{_content} );
   return $jsres->{d};
 }
 
@@ -46,8 +45,7 @@ sub get_captcha{
   $req->header('sid' => $sid);
   $req->content_type('application/json');
   $req->content('{}');
-  my $res = $ua->request( $req );
-  my $jscaptcha = from_json( $res->{_content} );
+  my $jscaptcha = from_json( $ua->request($req)->{_content} );
   return $jscaptcha->{d};
 }
 
@@ -72,8 +70,7 @@ sub check_captcha{
   $req->header('sid' => $sid);
   $req->content_type('application/json');
   $req->content( to_json({"pCaptcha" => $captcha_text}) );
-  my $res = $ua->request($req);
-  my $jscaptcha = from_json( $res->{_content} );
+  my $jscaptcha = from_json( $ua->request($req)->{_content} );
   return $jscaptcha->{d};
 }
 
@@ -86,10 +83,8 @@ sub search_nip{
   $req->header('sid' => $sid);
   $req->content_type('application/json');
   $req->content( to_json({"pParametryWyszukiwania" => {"Nip" => $nip}}) );
-  my $res = $ua->request($req);
-  my $jsondata = from_json($res->{_content});
-  $res = XMLin($jsondata->{d});
-  return $res;
+  my $jsondata = from_json( $ua->request($req)->{_content} );
+  return XMLin($jsondata->{d});
 }
 
 1; 
