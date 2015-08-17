@@ -97,12 +97,20 @@ GUS::API - [One line description of module's purpose here]
 
 =head1 VERSION
 
-This document describes GUS::API version 0.0.1
+This document describes GUS::API version 0.5.0
 
 
 =head1 SYNOPSIS
 
-    use GUS::API;
+use GUS::API qw(login get_captcha captcha2jpeg check_captcha search_nip);
+
+my $session_id = login('gopo49n9gbj303og6ny7');
+my $captcha = get_captcha($session_id); 
+captcha2jpeg($captcha, '/tmp/decoded_captcha.jpg');
+
+my $nip = '9570949817';
+my $data = search_nip($session_id, $nip);
+print 'Contractors name: '.$data->{dane}->{"Nazwa"}.' for NIP:'.$nip;
 
 =for author to fill in:
     Brief code example(s) here showing commonest usage(s).
