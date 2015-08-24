@@ -16,19 +16,17 @@ our @EXPORT_OK = qw(login get_captcha captcha2jpeg check_captcha search_nip);
 
 use version; our $VERSION = qv('0.0.1');
 
+use constant URL_REGON => 'https://wyszukiwarkaregontest.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc/ajaxEndpoint/';
 # Module implementation here
 
-my $url = "https://wyszukiwarkaregontest.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc/ajaxEndpoint/Zaloguj";
-my $url_get_captcha   = "https://wyszukiwarkaregontest.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc/ajaxEndpoint/PobierzCaptcha";
-my $url_check_captcha = "https://wyszukiwarkaregontest.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc/ajaxEndpoint/SprawdzCaptcha";
-my $url_search = "https://wyszukiwarkaregontest.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc/ajaxEndpoint/DaneSzukaj";
-
+my $url               = URL_REGON.'Zaloguj';
+my $url_get_captcha   = URL_REGON.'PobierzCaptcha';
+my $url_check_captcha = URL_REGON.'SprawdzCaptcha';
+my $url_search        = URL_REGON.'DaneSzukaj';
 
 my $json = {"pKluczUzytkownika" => 'gopo49n9gbj303og6ny7'};
 my $ua = LWP::UserAgent->new; # You might want some options here
 my $USERKEY = "gopo49n9gbj303og6ny7";
-
-
 
 sub login{
   my $userKey = shift;
